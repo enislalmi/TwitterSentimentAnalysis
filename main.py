@@ -13,6 +13,14 @@ import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import RegexpTokenizer
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import ComplementNB
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_val_score
+from sklearn import metrics
+from math import *
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report
 
 tweets = pd.read_csv('tweets.csv')
 tweets['sentiment'] = tweets['sentiment'].replace(['negative'],'0')
@@ -190,6 +198,42 @@ def handle_emojis(tweet):
     tweet = re.sub(r'(:,\(|:\'\(|:"\()', ' EMO_NEG ', tweet)
     return tweet
 
+
+def evaluate_model(model):
+
+  y_pred = model.predict(X_test)
+
+  print(classification_report(y_test, y_pred))
+
+  cf_matrix = confusion_matrix(y_test, y_pred)
+  categories = ['Negative ','Positive ']
+  group_names = ['True Negative ','False Positive ', 'False Negative ','True Positive ']
+  group_percentages = ['{0:.2%}'.format(value) for value in cf_matrix.flatten() / np.sum(cf_matrix)]
+  labels = [f'{v1}n{v2}' for v1, v2 in zip(group_names,group_percentages)]
+  labels = np.asarray(labels).reshape(2,2)
+  sns.heatmap(cf_matrix, annot = labels, cmap = 'Blues',fmt = '',
+xticklabels = categories, yticklabels = categories)
+  plt.xlabel("Predicted values", fontdict = {'size':14}, labelpad = 10)
+  plt.ylabel("Actual values" , fontdict = {'size':14}, labelpad = 10)
+  plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
+  plt.show()
+
+
+def evaluate_naive_bayes(model):
+     y_pred = model.predict(X_test)
+     print(classification_report(y_test, y_pred))
+     cf_matrix = confusion_matrix(y_test, y_pred)
+     sns.heatmap(cf_matrix, annot = True, cmap = 'Blues',fmt = '')
+     plt.xlabel("Predicted values", fontdict = {'size':14}, labelpad = 10)
+     plt.ylabel("Actual values" , fontdict = {'size':14}, labelpad = 10)
+     plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
+     plt.show()
+
+    
+     
+
+
+
 tweets['cleaned_tweets']  = tweets['text'].apply(lambda x: clean_tweets(x))  
 
 
@@ -199,5 +243,20 @@ tokens=tweets['cleaned_tweets'].apply(lambda x: x.split())
 token = RegexpTokenizer(r'[a-zA-Z0-9]+')
 cv = CountVectorizer(stop_words='english',ngram_range = (1,1),tokenizer = token.tokenize)
 text_counts = cv.fit_transform(tweets['cleaned_tweets'].values.astype('U'))
-print(text_counts)
 
+
+X = text_counts
+y = tweets['sentiment']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40,random_state=19)
+
+cnb = ComplementNB()
+cnb.fit(X_train, y_train)
+cross_cnb = cross_val_score(cnb, X, y,n_jobs = -1)
+print("Cross Validation score = ",cross_cnb)                
+print ("Train accuracy ={:.2f}%".format(cnb.score(X_train,y_train)*100))
+print ("Test accuracy ={:.2f}%".format(cnb.score(X_test,y_test)*100))
+train_acc_cnb=cnb.score(X_train,y_train)
+test_acc_cnb=cnb.score(X_test,y_test)
+
+evaluate_naive_bayes(cnb)
