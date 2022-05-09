@@ -199,7 +199,7 @@ def handle_emojis(tweet):
     return tweet
 
 
-def evaluate_model(model):
+def evaluate_with_two_labels(model):
 
   y_pred = model.predict(X_test)
 
@@ -219,11 +219,12 @@ xticklabels = categories, yticklabels = categories)
   plt.show()
 
 
-def evaluate_naive_bayes(model):
+def evaluate_with_three_labels(model):
      y_pred = model.predict(X_test)
+     categories = ['Negative','Positive','Neutral']
      print(classification_report(y_test, y_pred))
      cf_matrix = confusion_matrix(y_test, y_pred)
-     sns.heatmap(cf_matrix, annot = True, cmap = 'Blues',fmt = '')
+     sns.heatmap(cf_matrix, annot = True, cmap = 'Blues',fmt = ' ',xticklabels = categories, yticklabels = categories) 
      plt.xlabel("Predicted values", fontdict = {'size':14}, labelpad = 10)
      plt.ylabel("Actual values" , fontdict = {'size':14}, labelpad = 10)
      plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
@@ -259,4 +260,4 @@ print ("Test accuracy ={:.2f}%".format(cnb.score(X_test,y_test)*100))
 train_acc_cnb=cnb.score(X_train,y_train)
 test_acc_cnb=cnb.score(X_test,y_test)
 
-evaluate_naive_bayes(cnb)
+evaluate_with_three_labels(cnb)
