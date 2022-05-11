@@ -19,6 +19,11 @@ from math import *
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
+import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 
 
 
@@ -26,12 +31,11 @@ from sklearn.metrics import confusion_matrix, classification_report
 #that a search engine has been programmed to ignore,
 #both when indexing entries for searching and when retrieving them as the result of a search query.
 
+
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
 stopword = set(stopwords.words('english'))
-
-
 
 
 

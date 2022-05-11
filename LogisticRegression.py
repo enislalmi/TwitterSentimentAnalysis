@@ -37,7 +37,7 @@ stopword = set(stopwords.words('english'))
 
 tweets = clean_dataset()
 tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
-print(tweets['sentiment'].head())
+#print(tweets['sentiment'].head())
 
 
 X = tweets.cleaned_tweets
