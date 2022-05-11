@@ -60,6 +60,7 @@ def logistic_regression():
   print ("Test accuracy ={:.2f}%".format(LRmodel.score(X_test,y_test)*100))
   return LRmodel
   
-#nb;58, dt:65 lr:
+#nb;58, dt:65 lr:88
+#two parameters: nb:82, dt:83
 
 evaluate_with_two_labels(logistic_regression(), X_test, y_test)

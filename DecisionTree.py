@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn import tree
 from sklearn.metrics import accuracy_score
-from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean_dataset
+from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean_dataset, evaluate_with_two_labels
 
 
 
@@ -39,7 +39,7 @@ stopword = set(stopwords.words('english'))
 
 
 tweets = clean_dataset()  
-
+tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
 
 X = tweets.cleaned_tweets
 y = tweets.sentiment
@@ -63,4 +63,4 @@ def decision_trees():
   return clf
 
 
-evaluate_with_three_labels(decision_trees(), X_test, y_test)
+evaluate_with_two_labels(decision_trees(), X_test, y_test)

@@ -18,7 +18,7 @@ from math import *
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
-from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean_dataset
+from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean_dataset, evaluate_with_two_labels
 
 
 
@@ -32,6 +32,7 @@ nltk.download('wordnet')
 stopword = set(stopwords.words('english'))
 
 tweets = clean_dataset()
+tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
 #print(tweets['cleaned_tweets'].head())
 
 tokens=tweets['cleaned_tweets'].apply(lambda x: x.split())
@@ -57,4 +58,4 @@ def cnb():
   return cnb
 
 
-evaluate_with_three_labels(cnb(), X_test, y_test)
+evaluate_with_two_labels(cnb(), X_test, y_test)
