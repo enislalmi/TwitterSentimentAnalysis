@@ -54,10 +54,12 @@ X_test  = vectoriser.transform(X_test)
 
 def logistic_regression():
   
-  LRmodel = LogisticRegression(C = 2, max_iter = 1000, n_jobs=-1)
+  LRmodel = LogisticRegression(C = 3, max_iter = 1000, n_jobs=-1)
   LRmodel.fit(X_train, y_train)
+  print ("Train accuracy ={:.2f}%".format(LRmodel.score(X_train,y_train)*100))
+  print ("Test accuracy ={:.2f}%".format(LRmodel.score(X_test,y_test)*100))
   return LRmodel
   
-
+#nb;58, dt:65 lr:
 
 evaluate_with_two_labels(logistic_regression(), X_test, y_test)
