@@ -24,14 +24,10 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn import tree
 from sklearn.metrics import accuracy_score
-from utils import clean_tweets, handle_emojis, evaluate_with_three_labels
+from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean_dataset
 
 
-tweets = pd.read_csv('tweets.csv')
-tweets['sentiment'] = tweets['sentiment'].replace(['negative'],'0')
-tweets['sentiment'] = tweets['sentiment'].replace(['positive'],'1')
-tweets['sentiment'] = tweets['sentiment'].replace(['neutral'],'2')
-print(tweets.head())
+
 #Stop Words: A stop word is a commonly used word (such as “the”, “a”, “an”, “in”) 
 #that a search engine has been programmed to ignore,
 #both when indexing entries for searching and when retrieving them as the result of a search query.
@@ -42,7 +38,7 @@ nltk.download('wordnet')
 stopword = set(stopwords.words('english'))
 
 
-tweets['cleaned_tweets']  = tweets['text'].apply(lambda x: clean_tweets(x))  
+tweets = clean_dataset()  
 
 
 X = tweets.cleaned_tweets

@@ -20,10 +20,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
 
-tweets = pd.read_csv('tweets.csv')
-tweets['sentiment'] = tweets['sentiment'].replace(['negative'],'0')
-tweets['sentiment'] = tweets['sentiment'].replace(['positive'],'1')
-tweets['sentiment'] = tweets['sentiment'].replace(['neutral'],'2')
+
 
 #Stop Words: A stop word is a commonly used word (such as “the”, “a”, “an”, “in”) 
 #that a search engine has been programmed to ignore,
@@ -38,7 +35,13 @@ stopword = set(stopwords.words('english'))
 
 
 
-
+def clean_dataset():
+  df = pd.read_csv('tweets.csv')
+  df['sentiment'] = df['sentiment'].replace(['negative'],'0')
+  df['sentiment'] = df['sentiment'].replace(['positive'],'1')
+  df['sentiment'] = df['sentiment'].replace(['neutral'],'2')
+  df['cleaned_tweets']  = df['text'].apply(lambda x: clean_tweets(x)) 
+  return df
 
 def clean_tweets(tweet):
   # Lower Casing
@@ -198,7 +201,7 @@ def handle_emojis(tweet):
     # Cry -- :,(, :'(, :"(
     tweet = re.sub(r'(:,\(|:\'\(|:"\()', ' EMO_NEG ', tweet)
     return tweet
-tweets['cleaned_tweets']  = tweets['text'].apply(lambda x: clean_tweets(x))  
+ 
 def evaluate_with_three_labels(model, X_test, y_test):
      y_pred = model.predict(X_test)
      categories = ['Negative','Positive','Neutral']
