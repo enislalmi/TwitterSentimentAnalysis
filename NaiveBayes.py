@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import RegexpTokenizer
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import ComplementNB
+from sklearn.naive_bayes import ComplementNB, GaussianNB, MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_val_score
 from sklearn import metrics
@@ -37,18 +37,18 @@ tweets = clean_dataset()
 tokens=tweets['cleaned_tweets'].apply(lambda x: x.split())
 
 token = RegexpTokenizer(r'[a-zA-Z0-9]+')
-cv = CountVectorizer(stop_words='english',ngram_range = (1,1),tokenizer = token.tokenize)
+cv = CountVectorizer(stop_words='english',ngram_range = (1,3),tokenizer = token.tokenize)
 text_counts = cv.fit_transform(tweets['cleaned_tweets'].values.astype('U'))
 
 X = text_counts
 y = tweets['sentiment']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40,random_state=19)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,random_state=123)
 
 def cnb():
 
-  cnb = ComplementNB()
+  cnb = MultinomialNB()
   cnb.fit(X_train, y_train)
-  cross_cnb = cross_val_score(cnb, X, y,n_jobs = -1)
+  cross_cnb = cross_val_score(cnb, X, y,n_jobs = 3)
   print("Cross Validation score = ",cross_cnb)                
   print ("Train accuracy ={:.2f}%".format(cnb.score(X_train,y_train)*100))
   print ("Test accuracy ={:.2f}%".format(cnb.score(X_test,y_test)*100))
