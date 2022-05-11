@@ -53,11 +53,13 @@ X_test  = vectoriser.transform(X_test)
 
      
 def decision_trees():
- 
-  clf = tree.DecisionTreeClassifier()
+ #0.632768361581921
+ #0.655367231638418
+  clf = tree.DecisionTreeClassifier(max_depth=100, max_leaf_nodes= 120, min_samples_split=15, min_samples_leaf=3)
   clf.fit(X_train,y_train)
   y_pred=clf.predict(X_test)
   acc=accuracy_score(y_test,y_pred)
+  print("acc:", acc)
   return clf
 
 
