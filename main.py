@@ -76,6 +76,7 @@ def plot_wordcloud(text, mask=None, max_words=200, max_font_size=100, figure_siz
 
 data_pos=df[df['sentiment']=='1']['cleaned_tweets']
 data_neg=df[df['sentiment']=='0']['cleaned_tweets']
+data_neu=df[df['sentiment']=='2']['cleaned_tweets']
 
 pos_mask = np.array(Image.open('twitterimage.jpg'))
 
@@ -86,3 +87,10 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 fig2 =plot_wordcloud(data_neg,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Negative tweets")
 st.pyplot(fig2)
 st.set_option('deprecation.showPyplotGlobalUse', False)
+
+fig3 =plot_wordcloud(data_neu,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Neutral tweets")
+st.pyplot(fig3)
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
+
+
