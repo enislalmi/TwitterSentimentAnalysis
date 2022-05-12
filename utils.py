@@ -32,9 +32,7 @@ from nltk.corpus import stopwords
 #both when indexing entries for searching and when retrieving them as the result of a search query.
 
 
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
+
 stopword = set(stopwords.words('english'))
 
 
