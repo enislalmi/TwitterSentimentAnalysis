@@ -61,4 +61,5 @@ def logistic_regression():
 #nb;58, dt:65 lr:88
 #two parameters: nb:82, dt:83
 
-evaluate_with_two_labels(logistic_regression(), X_test, y_test)
+def fig_visualization_lr():
+  return evaluate_with_two_labels(logistic_regression(), X_test, y_test)

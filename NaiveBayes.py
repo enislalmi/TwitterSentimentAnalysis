@@ -56,4 +56,5 @@ def cnb():
   return cnb
 
 
-evaluate_with_two_labels(cnb(), X_test, y_test)
+def fig_visualization():
+ return evaluate_with_two_labels(cnb(), X_test, y_test)

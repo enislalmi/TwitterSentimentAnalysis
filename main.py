@@ -3,6 +3,9 @@ from scipy.__config__ import show
 from PIL import Image
 import plotly.express as px
 import streamlit as st
+from DecisionTree import fig_visualization_dt
+from LogisticRegression import fig_visualization_lr
+from NaiveBayes import fig_visualization
 from utils import *
 import plotly.graph_objs as go
 from collections import Counter
@@ -21,6 +24,7 @@ pos_mask = np.array(Image.open('twitterimage.jpg'))
 data_positive = df[df['sentiment']=='1']
 data_negative = df[df['sentiment']=='0']
 data_neutral = df[df['sentiment']=='2']
+decode_map = {0: "Negative", 2: "Neutral", 1: "Positive"}
 
 def show_dataframe(df):
 
@@ -97,8 +101,24 @@ def most_common_words(data):
                 width=700, height=700,color='Common_words')
     return fig4
 
+def decode_sentiment(label):
+    return decode_map[int(label)]
 
+def plot_statistics(df):
+    df.sentiment = df.sentiment.apply(lambda x: decode_sentiment(x))
+    target_cnt = Counter(df.sentiment)
+    x_axis=df.sentiment
+    y_axis=list(target_cnt.values())
+    fig = go.Figure([go.Bar(x=x_axis, y=y_axis)])
+    return fig
+   
+
+
+st.subheader("How does our data look like?")
 st.plotly_chart(show_dataframe(df))
+st.subheader("What are we working with?")
+st.plotly_chart(plot_statistics(df))
+
 
 fig1 =plot_wordcloud(data_pos,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Positive tweets")
 #st.pyplot(fig1)
@@ -122,3 +142,16 @@ st.subheader("Our distribution of negative words:")
 st.plotly_chart(most_common_words(data_negative))
 st.subheader("Our distribution of neutral words:")
 st.plotly_chart(most_common_words(data_neutral))
+
+st.header('Lets check models')
+st.subheader('Naive Bayes')
+fig_naive = fig_visualization()
+st.pyplot(fig_naive)
+
+st.subheader('Decision Trees')
+fig_dt = fig_visualization_dt()
+st.pyplot(fig_dt)
+
+st.subheader('Logistic Regression')
+fig_lr = fig_visualization_lr()
+st.pyplot(fig_lr)

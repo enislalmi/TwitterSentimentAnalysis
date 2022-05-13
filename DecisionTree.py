@@ -61,4 +61,5 @@ def decision_trees():
   return clf
 
 
-evaluate_with_two_labels(decision_trees(), X_test, y_test)
+def fig_visualization_dt():
+  return evaluate_with_two_labels(decision_trees(), X_test, y_test)
