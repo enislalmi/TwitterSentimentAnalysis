@@ -37,7 +37,7 @@ stopword = set(stopwords.words('english'))
 
 
 tweets = clean_dataset()  
-tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
+#tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
 
 X = tweets.cleaned_tweets
 y = tweets.sentiment
@@ -51,6 +51,7 @@ X_test  = vectoriser.transform(X_test)
 
      
 def decision_trees():
+  
  #0.632768361581921
  #0.655367231638418
   clf = tree.DecisionTreeClassifier(max_depth=100, max_leaf_nodes= 120, min_samples_split=15, min_samples_leaf=3)
@@ -60,6 +61,29 @@ def decision_trees():
   #print("acc:", acc)
   return clf,acc
 
-decision_trees()
 def fig_visualization_dt():
-  return evaluate_with_two_labels(decision_trees()[0], X_test, y_test)
+  #tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
+  return evaluate_with_three_labels(decision_trees()[0], X_test, y_test)
+
+
+
+evaluate_with_three_labels(decision_trees()[0], X_test, y_test)
+
+def fig_visualization_binary():
+  tweets = clean_dataset()  
+  tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
+
+  X = tweets.cleaned_tweets
+  y = tweets.sentiment
+  random_state = random.randint(10000,100000)
+  X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.05, random_state = 100)
+  vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=500000)
+  vectoriser.fit(X_train)
+  X_train = vectoriser.transform(X_train)
+  X_test  = vectoriser.transform(X_test)
+  clf = tree.DecisionTreeClassifier(max_depth=100, max_leaf_nodes= 120, min_samples_split=15, min_samples_leaf=3)
+  clf.fit(X_train,y_train)
+  y_pred=clf.predict(X_test)
+  acc=accuracy_score(y_test,y_pred)
+  #print("acc:", acc)
+  return evaluate_with_two_labels(clf, X_test, y_test), acc

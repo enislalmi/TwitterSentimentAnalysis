@@ -31,7 +31,7 @@ from utils import clean_tweets, handle_emojis, evaluate_with_three_labels, clean
 stopword = set(stopwords.words('english'))
 
 tweets = clean_dataset()
-tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
+#tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
 #print(tweets['cleaned_tweets'].head())
 
 tokens=tweets['cleaned_tweets'].apply(lambda x: x.split())
@@ -61,4 +61,27 @@ def cnb():
 
 
 def fig_visualization():
- return evaluate_with_two_labels(cnb()[0], X_test, y_test)
+ return evaluate_with_three_labels(cnb()[0], X_test, y_test)
+
+
+def fig_visualization_nb_binary():
+  tweets = clean_dataset()
+  tweets.drop(tweets[tweets.sentiment =='2'].index, inplace=True)
+  tokens=tweets['cleaned_tweets'].apply(lambda x: x.split())
+
+  token = RegexpTokenizer(r'[a-zA-Z0-9]+')
+  cv = CountVectorizer(stop_words='english',ngram_range = (1,3),tokenizer = token.tokenize)
+  text_counts = cv.fit_transform(tweets['cleaned_tweets'].values.astype('U'))
+
+  X = text_counts
+  y = tweets['sentiment']
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,random_state=123)
+  cnb = MultinomialNB()
+  cnb.fit(X_train, y_train)
+  cross_cnb = cross_val_score(cnb, X, y,n_jobs = 3)
+  print("Cross Validation score = ",cross_cnb)                
+  print ("Train accuracy ={:.2f}%".format(cnb.score(X_train,y_train)*100))
+  print ("Test accuracy ={:.2f}%".format(cnb.score(X_test,y_test)*100))
+  train_acc_cnb=cnb.score(X_train,y_train)
+  test_acc_cnb=cnb.score(X_test,y_test)
+  return evaluate_with_two_labels(cnb, X_test, y_test), train_acc_cnb, test_acc_cnb
