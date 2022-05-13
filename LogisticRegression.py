@@ -54,12 +54,14 @@ def logistic_regression():
   
   LRmodel = LogisticRegression(C = 3, max_iter = 1000, n_jobs=-1)
   LRmodel.fit(X_train, y_train)
-  print ("Train accuracy ={:.2f}%".format(LRmodel.score(X_train,y_train)*100))
-  print ("Test accuracy ={:.2f}%".format(LRmodel.score(X_test,y_test)*100))
-  return LRmodel
+  train_acc =LRmodel.score(X_train,y_train)*100
+  test_acc = LRmodel.score(X_test,y_test)*100
+  #print ("Train accuracy ={:.2f}%".format(LRmodel.score(X_train,y_train)*100))
+  #print ("Test accuracy ={:.2f}%".format(LRmodel.score(X_test,y_test)*100))
+  return LRmodel, train_acc, test_acc
   
 #nb;58, dt:65 lr:88
 #two parameters: nb:82, dt:83
 
 def fig_visualization_lr():
-  return evaluate_with_two_labels(logistic_regression(), X_test, y_test)
+  return evaluate_with_two_labels(logistic_regression()[0], X_test, y_test)

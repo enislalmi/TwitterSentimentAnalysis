@@ -3,10 +3,10 @@ from scipy.__config__ import show
 from PIL import Image
 import plotly.express as px
 import streamlit as st
-from DecisionTree import fig_visualization_dt
+from DecisionTree import decision_trees, fig_visualization_dt
 from LocalSensitivityHashing import print_results
-from LogisticRegression import fig_visualization_lr
-from NaiveBayes import fig_visualization
+from LogisticRegression import fig_visualization_lr, logistic_regression
+from NaiveBayes import fig_visualization,cnb
 from utils import *
 import plotly.graph_objs as go
 from collections import Counter
@@ -148,14 +148,29 @@ st.header('Lets check models')
 st.subheader('Naive Bayes')
 fig_naive = fig_visualization()
 st.pyplot(fig_naive)
+st.subheader("Precision Score")
+st.subheader("Train accuracy:")
+st.write(cnb()[1])
+st.subheader("Test accuracy:")
+st.write(cnb()[2])
+
 
 st.subheader('Decision Trees')
 fig_dt = fig_visualization_dt()
 st.pyplot(fig_dt)
+st.subheader("Precision Score")
+st.subheader("Test accuracy:")
+st.write(decision_trees()[1])
+
 
 st.subheader('Logistic Regression')
 fig_lr = fig_visualization_lr()
 st.pyplot(fig_lr)
+st.subheader("Precision Score")
+st.subheader("Train accuracy:")
+st.write(logistic_regression()[1])
+st.subheader("Test accuracy:")
+st.write(logistic_regression()[2])
 
 st.subheader("Local Sensitivity Hashing")
 tweet = st.text_input("Tweet I wanna see sentiment")

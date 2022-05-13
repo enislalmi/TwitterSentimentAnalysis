@@ -1,3 +1,4 @@
+from cgi import test
 import pandas as pd
 import numpy as np
 import matplotlib as nlp
@@ -53,8 +54,11 @@ def cnb():
   print ("Test accuracy ={:.2f}%".format(cnb.score(X_test,y_test)*100))
   train_acc_cnb=cnb.score(X_train,y_train)
   test_acc_cnb=cnb.score(X_test,y_test)
-  return cnb
+  return cnb, train_acc_cnb, test_acc_cnb
+
+
+
 
 
 def fig_visualization():
- return evaluate_with_two_labels(cnb(), X_test, y_test)
+ return evaluate_with_two_labels(cnb()[0], X_test, y_test)

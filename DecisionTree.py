@@ -57,9 +57,9 @@ def decision_trees():
   clf.fit(X_train,y_train)
   y_pred=clf.predict(X_test)
   acc=accuracy_score(y_test,y_pred)
-  print("acc:", acc)
-  return clf
+  #print("acc:", acc)
+  return clf,acc
 
-
+decision_trees()
 def fig_visualization_dt():
-  return evaluate_with_two_labels(decision_trees(), X_test, y_test)
+  return evaluate_with_two_labels(decision_trees()[0], X_test, y_test)
