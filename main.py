@@ -13,7 +13,14 @@ st.subheader("A data mining approach.")
 
 
 df = clean_dataset()
-
+data_pos=df[df['sentiment']=='1']['cleaned_tweets']
+data_neg=df[df['sentiment']=='0']['cleaned_tweets']
+data_neu=df[df['sentiment']=='2']['cleaned_tweets']
+df['temp_list'] = df['cleaned_tweets'].apply(lambda x:str(x).split())
+pos_mask = np.array(Image.open('twitterimage.jpg'))
+data_positive = df[df['sentiment']=='1']
+data_negative = df[df['sentiment']=='0']
+data_neutral = df[df['sentiment']=='2']
 
 def show_dataframe(df):
 
@@ -42,9 +49,6 @@ def show_dataframe(df):
                             xref="paper",
                             yref="paper"))
     return fig
-
-
-st.plotly_chart(show_dataframe(df))
 
 def plot_wordcloud(text, mask=None, max_words=200, max_font_size=100, figure_size=(24.0,16.0), color = 'white',
                    title = None, title_size=40, image_color=False):
@@ -75,11 +79,26 @@ def plot_wordcloud(text, mask=None, max_words=200, max_font_size=100, figure_siz
     plt.axis('off');
     plt.tight_layout()  
 
-data_pos=df[df['sentiment']=='1']['cleaned_tweets']
-data_neg=df[df['sentiment']=='0']['cleaned_tweets']
-data_neu=df[df['sentiment']=='2']['cleaned_tweets']
+def most_common_words_all(df):
+    top = Counter([item for sublist in df['temp_list'] for item in sublist])
+    temp = pd.DataFrame(top.most_common(20))
+    temp.columns = ['Common_words','count']
+    temp.style.background_gradient(cmap='Blues')
 
-pos_mask = np.array(Image.open('twitterimage.jpg'))
+    fig = px.treemap(temp, path=['Common_words'], values='count',title='Most Common words through our dataset')
+    return fig
+
+def most_common_words(data):
+    top = Counter([item for sublist in data['temp_list'] for item in sublist])
+    temp = pd.DataFrame(top.most_common(20))
+    temp.columns = ['Common_words','count']
+    temp.style.background_gradient(cmap='Greens')
+    fig4 = px.bar(temp, x="count", y="Common_words", title='Most Commmon Words', orientation='h', 
+                width=700, height=700,color='Common_words')
+    return fig4
+
+
+st.plotly_chart(show_dataframe(df))
 
 fig1 =plot_wordcloud(data_pos,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Positive tweets")
 #st.pyplot(fig1)
@@ -93,31 +112,13 @@ fig3 =plot_wordcloud(data_neu,mask=pos_mask,color='white',max_font_size=100,titl
 #st.pyplot(fig3)
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+st.subheader("Distribution of the most common words through the dataset")
+st.plotly_chart(most_common_words_all(df))
 
-
-df['temp_list'] = df['cleaned_tweets'].apply(lambda x:str(x).split())
-top = Counter([item for sublist in df['temp_list'] for item in sublist])
-temp = pd.DataFrame(top.most_common(20))
-temp.columns = ['Common_words','count']
-temp.style.background_gradient(cmap='Blues')
-
-fig3 = px.treemap(temp, path=['Common_words'], values='count',title='Most Common words through our dataset')
-st.plotly_chart(fig3)
-
-data_positive = df[df['sentiment']=='1']
-data_negative = df[df['sentiment']=='0']
-
-
-def most_common_words(data):
-    top = Counter([item for sublist in data['temp_list'] for item in sublist])
-    temp = pd.DataFrame(top.most_common(20))
-    temp.columns = ['Common_words','count']
-    temp.style.background_gradient(cmap='Greens')
-    fig4 = px.bar(temp, x="count", y="Common_words", title='Most Commmon Words', orientation='h', 
-                width=700, height=700,color='Common_words')
-    return fig4
 
 st.subheader("Our distribution of positive words:")
 st.plotly_chart(most_common_words(data_positive))
 st.subheader("Our distribution of negative words:")
 st.plotly_chart(most_common_words(data_negative))
+st.subheader("Our distribution of neutral words:")
+st.plotly_chart(most_common_words(data_neutral))
