@@ -1,3 +1,4 @@
+from turtle import pos
 import numpy as np
 import pandas as pd
 import re
@@ -68,26 +69,31 @@ def predict(text, df, permutations, num_results, forest):
     return result
 
 
-permutations = 128
+def print_results(keyword):
+    permutations = 128
 
-forest = get_forest(db, permutations)
-#We set the number of recommendations that we want
-num_recommendations = 10
-#We set the keyword to find those recommandations as keyword
-keyword = 'Today was a good day!'
-print(predict(keyword, db, permutations, num_recommendations, forest))
-result = len(predict(keyword, db, permutations, num_recommendations, forest))
-res_pos = (predict(keyword, db, permutations, num_recommendations, forest))
-res_neg = (predict(keyword, db, permutations, num_recommendations, forest))
-res_neu =  (predict(keyword, db, permutations, num_recommendations, forest))
-res_pos=res_pos.to_frame()
-res_neg=res_neg.to_frame()
-res_neu=res_neu.to_frame()
-res_pos_total = res_pos[res_pos['sentiment'] == 'positive'].count()
-res_neg_total = res_neg[res_neg['sentiment'] == 'negative'].count()
-res_neu_total = res_neu[res_neu['sentiment'] == 'neutral'].count()
-print('The tweet', keyword,'is positive with probability:', res_pos_total/result)
-print('The tweet', keyword,'is negative with probability:', res_neg_total/result)
-print('The tweet', keyword,'is neutral with probability:', res_neu_total/result)
-#print("Res pos total:", res_pos_total, "\n resneg:", res_neg_total, "\n res neu:", res_neu_total)
+    forest = get_forest(db, permutations)
+    #We set the number of recommendations that we want
+    num_recommendations = 10
+    #We set the keyword to find those recommandations as keyword
+    #keyword = 'Today was a good day!'
+    #print(predict(keyword, db, permutations, num_recommendations, forest))
+    result = len(predict(keyword, db, permutations, num_recommendations, forest))
+    res_pos = (predict(keyword, db, permutations, num_recommendations, forest))
+    res_neg = (predict(keyword, db, permutations, num_recommendations, forest))
+    res_neu =  (predict(keyword, db, permutations, num_recommendations, forest))
+    res_pos=res_pos.to_frame()
+    res_neg=res_neg.to_frame()
+    res_neu=res_neu.to_frame()
+    res_pos_total = res_pos[res_pos['sentiment'] == 'positive'].count()
+    res_neg_total = res_neg[res_neg['sentiment'] == 'negative'].count()
+    res_neu_total = res_neu[res_neu['sentiment'] == 'neutral'].count()
+    pos_sentiment = res_pos_total/result
+    neg_sentiment = res_neg_total/result
+    neu_sentiment = res_neu_total/result
+    return [pos_sentiment, neg_sentiment, neu_sentiment]
+    #print('The tweet', keyword,'is positive with probability:', res_pos_total/result)
+    #print('The tweet', keyword,'is negative with probability:', res_neg_total/result)
+    #print('The tweet', keyword,'is neutral with probability:', res_neu_total/result)
+    #print("Res pos total:", res_pos_total, "\n resneg:", res_neg_total, "\n res neu:", res_neu_total)
 

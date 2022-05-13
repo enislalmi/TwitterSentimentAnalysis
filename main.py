@@ -4,6 +4,7 @@ from PIL import Image
 import plotly.express as px
 import streamlit as st
 from DecisionTree import fig_visualization_dt
+from LocalSensitivityHashing import print_results
 from LogisticRegression import fig_visualization_lr
 from NaiveBayes import fig_visualization
 from utils import *
@@ -155,3 +156,12 @@ st.pyplot(fig_dt)
 st.subheader('Logistic Regression')
 fig_lr = fig_visualization_lr()
 st.pyplot(fig_lr)
+
+st.subheader("Local Sensitivity Hashing")
+tweet = st.text_input("Tweet I wanna see sentiment")
+st.subheader("This tweet is positive with:")
+st.subheader(print_results(tweet)[0].values)
+st.subheader("This tweet is negative with:")
+st.subheader(print_results(tweet)[1].values)
+st.subheader("This tweet is neutral with:")
+st.subheader(print_results(tweet)[2].values)
