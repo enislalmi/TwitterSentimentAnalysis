@@ -145,7 +145,7 @@ st.subheader("Our distribution of neutral words:")
 st.plotly_chart(most_common_words(data_neutral))
 
 st.header('Lets check models')
-st.subheader('Naive Bayes with Neutral/Positive/Negative')
+st.subheader('Naive Bayes with Neutral/Positive/Negative (number of records)')
 fig_naive = fig_visualization()
 st.pyplot(fig_naive)
 st.subheader("Precision Score")
@@ -155,7 +155,7 @@ st.subheader("Test accuracy:")
 st.write(cnb()[2])
 
 
-st.subheader('Naive Bayes with Positive/Negative')
+st.subheader('Naive Bayes with Positive/Negative (percentage)')
 fig_naive_bi = fig_visualization_nb_binary()[0]
 st.pyplot(fig_naive_bi)
 st.subheader("Precision Score")
@@ -165,14 +165,14 @@ st.subheader("Test accuracy:")
 st.write(fig_visualization_nb_binary()[2])
 
 
-st.subheader('Decision Trees with Positive/Negative values')
+st.subheader('Decision Trees with Positive/Negative values (percentage)')
 fig_dt = fig_visualization_binary()[0]
 st.pyplot(fig_dt)
 st.subheader("Test accuracy:")
 st.write(fig_visualization_binary()[1])
 
 
-st.subheader('Decision Trees with Positive/Negative/Neutra values')
+st.subheader('Decision Trees with Positive/Negative/Neutral values (number of records)')
 fig_dt1 = fig_visualization_dt()
 st.pyplot(fig_dt1)
 st.subheader("Precision Score")
@@ -180,7 +180,7 @@ st.subheader("Test accuracy:")
 st.write(decision_trees()[1])
 
 
-st.subheader('Logistic Regression')
+st.subheader('Logistic Regression (percentage)')
 fig_lr = fig_visualization_lr()
 st.pyplot(fig_lr)
 st.subheader("Precision Score")
