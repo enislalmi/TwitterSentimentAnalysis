@@ -31,8 +31,6 @@ from nltk.corpus import stopwords
 #that a search engine has been programmed to ignore,
 #both when indexing entries for searching and when retrieving them as the result of a search query.
 
-
-
 stopword = set(stopwords.words('english'))
 
 
