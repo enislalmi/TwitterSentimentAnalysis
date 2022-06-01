@@ -33,6 +33,13 @@ from nltk.corpus import stopwords
 
 stopword = set(stopwords.words('english'))
 
+def check_missing_data(df):
+    for i in df.columns:
+        null_rate = df[i].isna().sum() / len(df) * 100
+        if null_rate > 0:
+            return(f"{i} null rate: {round(null_rate,2)}%")
+        else:
+            return(f"Column {i} has no missing data.")
 
 
 def clean_dataset():

@@ -27,6 +27,9 @@ data_negative = df[df['sentiment']=='0']
 data_neutral = df[df['sentiment']=='2']
 decode_map = {0: "Negative", 2: "Neutral", 1: "Positive"}
 
+
+
+
 def show_dataframe(df):
 
     fig = go.Figure(data=[go.Table(
