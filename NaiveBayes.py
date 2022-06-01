@@ -57,9 +57,6 @@ def cnb():
   return cnb, train_acc_cnb, test_acc_cnb
 
 
-
-
-
 def fig_visualization():
  return evaluate_with_three_labels(cnb()[0], X_test, y_test)
 
