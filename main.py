@@ -132,6 +132,7 @@ st.header("Tweet Tweet representation of the Negative Words")
 fig2 =plot_wordcloud(data_neg,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Negative tweets")
 st.pyplot(fig2)
 st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 st.header("Tweet Tweet representation of the Neutral Words")
 fig3 =plot_wordcloud(data_neu,mask=pos_mask,color='white',max_font_size=100,title_size=30,title="Neutral tweets")
